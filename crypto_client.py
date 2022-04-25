@@ -14,20 +14,21 @@ import time, hmac, hashlib, requests, base64
 
 class CryptoClient(object):
     '''
-    API client to access Coinbase (CB) and Coinbase Pro (CBP)
+    API client access to various exchanges
+    Coinbase (CB), Coinbase Pro (CBP), KuCoin (KC)
     
     Full API documentation found in the README markdown
     '''
 
     def __init__(self, api_key, api_secret, base_url, exchange, api_version, api_passphrase):
         '''
-        api_secret: <insert differences between CB and CBP>
-        api_passphrase: required for CBP, NOT required for CB
+        api_secret: <insert differences between CB and CBP/KC>
+        api_passphrase: required for CBP/KC, NOT required for CB
         '''
         self.api_key = api_key
         self.api_secret = api_secret
         self.base_url = base_url
-        self.exchange = exchange.lower()
+        self.exchange = exchange.upper()
         self.api_version = api_version
         self.api_passphrase = api_passphrase
         
@@ -35,24 +36,32 @@ class CryptoClient(object):
         '''
         Builds required headers for authentication
         '''
-        # current unix timestamp (seconds)
-        access_timestamp = str(time.time()) if self.exchange == 'cbp' else str(int(time.time()))
+        # current unix timestamp (seconds for CB/CBP, milliseconds for KC)
+        access_timestamp = str(int(time.time() * 1000)) if self.exchange == 'KC' else str(int(time.time()))
         message = '{}{}{}{}'.format(access_timestamp, method, relative_path, body)
         
-        hmac_key = base64.b64decode(self.api_secret) if self.exchange == 'cbp' else self.api_secret.encode('utf-8')
-        if self.exchange == 'cbp':
+        hmac_key = base64.b64decode(self.api_secret) if self.exchange == 'CBP' else self.api_secret.encode('utf-8')
+        if (self.exchange == 'CBP' or self.exchange  == 'KC'):
             digest = hmac.new(hmac_key, message.encode('utf-8'), digestmod=hashlib.sha256).digest()
             signature = base64.b64encode(digest).decode('utf-8')
         else:
             signature = hmac.new(hmac_key, message.encode('utf-8'), hashlib.sha256).hexdigest()
         
+        if self.exchange == 'KC':
+            encrypted_passphrase = base64.b64encode(hmac.new(self.api_secret.encode('utf-8'),
+                                                             self.api_passphrase.encode('utf-8'),
+                                                             digestmod=hashlib.sha256).digest())
+        
+        header_prefix = 'CB' if self.exchange == 'CBP' else self.exchange
+        header_access = 'ACCESS' if (self.exchange == 'CB' or self.exchange == 'CBP') else 'API'
+        header_api_version = 'VERSION' if (self.exchange == 'CB' or self.exchange == 'CBP') else 'API-KEY-VERSION'
         headers = {
             'Content-Type': 'application/json',
-            'CB-ACCESS-KEY': self.api_key,
-            'CB-ACCESS-PASSPHRASE': self.api_passphrase,
-            'CB-ACCESS-SIGN': signature,
-            'CB-ACCESS-TIMESTAMP': access_timestamp,
-            'CB-VERSION': self.api_version
+            f'{header_prefix}-{header_access}-KEY': self.api_key,
+            f'{header_prefix}-{header_access}-PASSPHRASE': encrypted_passphrase if self.exchange == 'KC' else self.api_passphrase,
+            f'{header_prefix}-{header_access}-SIGN': signature,
+            f'{header_prefix}-{header_access}-TIMESTAMP': access_timestamp,
+            f'{header_prefix}-{header_api_version}': self.api_version
         }
         
         url = '{}{}'.format(self.base_url, relative_path)
