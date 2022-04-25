@@ -3,9 +3,7 @@ Learning Journey wth Python, API's and crypto exchanges
 
 ## Documentation
 
-The Coinbase API Developers documentation is **all over the place**! Coinbase's developers/API documentation is not as intuitive, compared to Twitter's API and developers online documentation.
-
-I've aggregated the links below
+The Coinbase API Developers documentation is **all over the place**! Coinbase's developers/API documentation is not as intuitive, as compared to Twitter's API and developers online documentation. I've aggregated the links below to help those who are learning API's usage and development, Python, authentication, etc ...
 
 **Coinbase**
 
