@@ -8,7 +8,7 @@ I've created a client that's able to access my crypto transactions on various ex
 
 I find Coinbase's API documentation to be quite **messy**, not as intuitive, and **all over the place**! On the contrary, Twitter's documentation is great and leads to an easy onramp for learning. KuCoin follows suit and is on par with details and navigational ease.
 
-I've aggregated the documentation to the [References Section] (#-references) to help those who are learning API's usage and development, Python, authentication, etc ... this really is for myself, serving as notes during my learning journey!
+I've aggregated the documentation to the [References Section] (#references) to help those who are learning API's usage and development, Python, authentication, etc ... this really is for myself, serving as notes during my learning journey!
 
 # References
 
