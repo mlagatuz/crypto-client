@@ -4,7 +4,7 @@ This is my learning journey wth Python, API's and crypto exchanges.
 
 I've created a client that's able to access my crypto transactions on various exchanges (currently Coinbase, Coinbase Pro, and KuCoin).  
 
-## Documentation
+# Documentation
 
 I find Coinbase's API documentation to be quite **messy**, not as intuitive, and **all over the place**! On the contrary, Twitter's documentation is great and leads to an easy onramp for learning. KuCoin follows suit and is on par with details and navigational ease.
 
