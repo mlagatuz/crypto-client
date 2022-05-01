@@ -20,6 +20,11 @@ class CryptoClient(object):
     Full API documentation found in the README markdown
     '''
 
+    account_resourse_path = {
+        'CB': f'/v2/accounts',
+        'CBP': f'/accounts',
+        'KC': f'/api/v1/accounts' }
+
     def __init__(self, api_key, api_secret, base_url, exchange, api_version, api_passphrase):
         '''
         api_secret: <insert differences between CB and CBP/KC>
@@ -33,6 +38,16 @@ class CryptoClient(object):
         self.api_passphrase = api_passphrase
         
     def req(self, method, relative_path, body):
+        '''
+        
+        '''
+        headers = self._create_headers(method, relative_path, body)
+        
+        url = '{}{}'.format(self.base_url, relative_path)
+        res = requests.get(url, headers=headers)
+        return res
+        
+    def _create_headers(self, method, relative_path, body):
         '''
         Builds required headers for authentication
         '''
@@ -63,6 +78,39 @@ class CryptoClient(object):
             f'{header_prefix}-{header_access}-TIMESTAMP': access_timestamp,
             f'{header_prefix}-{header_api_version}': self.api_version
         }
+        
+        return headers
+    
+    def get_accounts(self):
+        '''  
+        # Add to README
+        CB:  https://developers.coinbase.com/api/v2#accounts
+        CBP: https://docs.cloud.coinbase.com/exchange/reference/exchangerestapi_getaccounts
+        KC:  https://docs.kucoin.com/#list-accounts
+    
+        # Notes
+        CB:  Pagination in json (dump) output
+        CBP: Pagination NOT in json (dump) output; output format is different
+        KC:  I haven't encountered Pagination (yet) with KC output
+        
+        '''
+        method='GET'
+        relative_path=self.account_resourse_path[self.exchange] 
+        body=''
+        headers = self._create_headers(method, relative_path, body)
+        
+        url = '{}{}'.format(self.base_url, relative_path)
+        res = requests.get(url, headers=headers)
+        return res
+    
+    def get_account(self, account_id):
+        '''
+        
+        '''
+        method='GET'
+        relative_path='{}{}'.format(self.account_resourse_path[self.exchange], f'/{account_id}')
+        body=''
+        headers = self._create_headers(method, relative_path, body)
         
         url = '{}{}'.format(self.base_url, relative_path)
         res = requests.get(url, headers=headers)
