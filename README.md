@@ -10,6 +10,22 @@ I find Coinbase's API documentation to be quite **messy**, not as intuitive, and
 
 I've aggregated the documentation to the [References Section](#references) to help those who are learning API's usage and development, Python, authentication, etc ... this really is for myself, serving as notes during my learning journey!
 
+# Development Environment
+
+My Integrated Development Environment (IDE) of choice is **Eclipse** and I'm using the **PyDev** module for my Python Development.
+
+Run --> Run Configurations --> Select your Python run configuration --> Environment 
+
+Here you can add your environment variables, as if you're running on the command line (terminal)
+
+# Notes
+
+I noticed the API Secret Keys differ between Coinbase and Coinbase Pro
+
+```
+abcabcabcxxxxxxabc # API Secret Coinbase
+```
+
 # References
 
 **Coinbase**
