@@ -63,6 +63,18 @@ headers = {
 }
 ```
 
+# Methods
+
+**get_accounts()** 
+
+Get all accounts available to you at the respective exchange. API information can be found with the following links:
+
+[Coinbase - Accounts](https://developers.coinbase.com/api/v2#list-accounts)
+
+[Coinbase Pro - Accounts](https://docs.cloud.coinbase.com/exchange/reference/exchangerestapi_getaccounts)
+
+[KuCoin - Accounts](https://docs.kucoin.com/#list-accounts)
+
 # References
 
 **Coinbase**
