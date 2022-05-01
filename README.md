@@ -20,10 +20,24 @@ Here you can add your environment variables, as if you're running on the command
 
 # Notes
 
-I noticed the API Secret Keys differ between Coinbase and Coinbase Pro
+I noticed the API Secret Keys are in different formats between Coinbase and Coinbase Pro
 
 ```
-abcabcabcxxxxxxabc # API Secret Coinbase
+abcabcabcabcabcxxxxxxxxxxxxxxx # API Secret Coinbase
+```
+```
+xyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxxxxxxxxxxxxxxxxxxxxxxxxxxxx== # API Secret Coinbase Pro
+```
+
+It appears the secret key for CB has already been base-64 decoded, whereas with CBP, you'll first need to base-64 decode the key
+
+```
+hmac_key = base64.b64decode(self.api_secret) if self.exchange == 'CBP' else self.api_secret.encode('utf-8')
+if (self.exchange == 'CBP' or self.exchange  == 'KC'):
+	digest = hmac.new(hmac_key, message.encode('utf-8'), digestmod=hashlib.sha256).digest()
+	signature = base64.b64encode(digest).decode('utf-8')
+else:
+	signature = hmac.new(hmac_key, message.encode('utf-8'), hashlib.sha256).hexdigest()
 ```
 
 # References
