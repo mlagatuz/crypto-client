@@ -21,14 +21,14 @@ class CryptoClient(object):
     '''
 
     account_resourse_path = {
-        'CB': f'/v2/accounts',
-        'CBP': f'/accounts',
-        'KC': f'/api/v1/accounts' }
+        'CB': '/v2/accounts',
+        'CBP': '/accounts',
+        'KC': '/api/v1/accounts',
+        'SB_CBP': '/accounts' }
 
     def __init__(self, api_key, api_secret, base_url, exchange, api_version, api_passphrase):
         '''
-        api_secret: <insert differences between CB and CBP/KC>
-        api_passphrase: required for CBP/KC, NOT required for CB
+
         '''
         self.api_key = api_key
         self.api_secret = api_secret
@@ -55,8 +55,9 @@ class CryptoClient(object):
         access_timestamp = str(int(time.time() * 1000)) if self.exchange == 'KC' else str(int(time.time()))
         message = '{}{}{}{}'.format(access_timestamp, method, relative_path, body)
         
-        hmac_key = base64.b64decode(self.api_secret) if self.exchange == 'CBP' else self.api_secret.encode('utf-8')
-        if (self.exchange == 'CBP' or self.exchange  == 'KC'):
+        hmac_key = base64.b64decode(self.api_secret) if 'CBP' in self.exchange else self.api_secret.encode('utf-8')
+        
+        if not self.exchange == 'CB':
             digest = hmac.new(hmac_key, message.encode('utf-8'), digestmod=hashlib.sha256).digest()
             signature = base64.b64encode(digest).decode('utf-8')
         else:
@@ -67,9 +68,9 @@ class CryptoClient(object):
                                                              self.api_passphrase.encode('utf-8'),
                                                              digestmod=hashlib.sha256).digest())
         
-        header_prefix = 'CB' if self.exchange == 'CBP' else self.exchange
-        header_access = 'ACCESS' if (self.exchange == 'CB' or self.exchange == 'CBP') else 'API'
-        header_api_version = 'VERSION' if (self.exchange == 'CB' or self.exchange == 'CBP') else 'API-KEY-VERSION'
+        header_prefix = 'CB' if not self.exchange == 'KC' else self.exchange
+        header_access = 'ACCESS' if not (self.exchange == 'KC') else 'API'
+        header_api_version = 'VERSION' if not (self.exchange == 'KC') else 'API-KEY-VERSION'
         headers = {
             'Content-Type': 'application/json',
             f'{header_prefix}-{header_access}-KEY': self.api_key,
@@ -83,11 +84,6 @@ class CryptoClient(object):
     
     def get_accounts(self):
         '''  
-        # Add to README
-        CB:  https://developers.coinbase.com/api/v2#accounts
-        CBP: https://docs.cloud.coinbase.com/exchange/reference/exchangerestapi_getaccounts
-        KC:  https://docs.kucoin.com/#list-accounts
-    
         # Notes
         CB:  Pagination in json (dump) output
         CBP: Pagination NOT in json (dump) output; output format is different
