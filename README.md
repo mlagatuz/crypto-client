@@ -18,6 +18,14 @@ Run --> Run Configurations --> Select your Python run configuration --> Environm
 
 Here you can add your environment variables, as if you're running on the command line (terminal)
 
+# Notes
+
+I noticed the API Secret Keys differ between Coinbase and Coinbase Pro
+
+```
+abcabcabcxxxxxxabc # API Secret Coinbase
+```
+
 # References
 
 **Coinbase**
