@@ -8,15 +8,17 @@ I've created a client that's able to access my crypto transactions on various ex
 
 I find Coinbase's API documentation to be quite **messy**, not as intuitive, and **all over the place**! On the contrary, Twitter's documentation is great and leads to an easy onramp for learning. KuCoin follows suit and is on par with details and navigational ease.
 
-I've aggregated the documentation to the [References Section](#references) to help those who are learning API's usage and development, Python, authentication, etc ... this really is for myself, serving as notes during my learning journey!
+I've aggregated various documentations and placed them in the [References Section](#references). This will help those who are learning API usage, Python, authentication, etc ... this really is for myself, serving as notes during my learning journey!
 
 # Development Environment
 
-My Integrated Development Environment (IDE) of choice is **Eclipse** and I'm using the **PyDev** module for my Python Development.
+My Integrated Development Environment (IDE) of choice is **Eclipse** and I'm using the **PyDev** module for my Python Development. You can set your environment variables in Eclipse/PyDev like so:
 
+```
 Run --> Run Configurations --> Select your Python run configuration --> Environment 
+```
 
-Here you can add your environment variables, as if you're running on the command line (terminal)
+If you want to run on your terminal (command line), you'll need to set your environment variables in the terminal environment. This will depend on the type of system you're developing on. 
 
 # Notes
 
@@ -74,6 +76,27 @@ Get all accounts available to you at the respective exchange. API information ca
 [Coinbase Pro - Accounts](https://docs.cloud.coinbase.com/exchange/reference/exchangerestapi_getaccounts)
 
 [KuCoin - Accounts](https://docs.kucoin.com/#list-accounts)
+
+# Sandbox Testing
+
+**Depositing Fiat**
+
+I've created a script that will programmically deposit (transfer) funds via ACH into your account. Sanitized output from the script <insert-script-name> below
+
+```
+	
+base_url: https://api-public.sandbox.exchange.coinbase.com
+message: 1651473639POST/deposits/payment-method{"profile_id": "<my-default-profile-id>", "amount": "10", "payment_method_id": "<payment-method-id>", "currency": "USD"}
+url: https://api-public.sandbox.exchange.coinbase.com/deposits/payment-method
+<Response [200]>
+{
+    "id": "<transfer-id>",
+    "amount": "10.00000000",
+    "currency": "USD",
+    "payout_at": "2015-02-18T16:54:00-08:00"
+}
+	
+```
 
 # References
 
