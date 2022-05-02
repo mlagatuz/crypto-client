@@ -81,7 +81,7 @@ Get all accounts available to you at the respective exchange. API information ca
 
 **Depositing Fiat**
 
-I've created a script that will programmically deposit (transfer) funds via ACH into your account. Sanitized output from the script <insert-script-name> below
+I've created a script that will programmically deposit (transfer) funds via ACH into your account. Sanitized output from the script **deposit_fiat.py**
 
 ```
 	
@@ -97,6 +97,14 @@ url: https://api-public.sandbox.exchange.coinbase.com/deposits/payment-method
 }
 	
 ```
+
+This is currently working on the Coinbase Sandbox; I haven't tested real deposits on CB/CBP (at least not yet). The endpoints you'll need to gather necessary data are: /accounts and /payment-methods. 
+
+Use (uncomment) **relative_path = '/accounts'** to gather all your availabe deposit accounts
+
+Use (uncomment) **relative_path = '/payment-methods'** to gather all your available payment methods
+
+The code logs the program flow via debugging print statements. 
 
 # References
 
